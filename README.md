@@ -8,19 +8,38 @@ El problema es de memoria y de organización, no de intención. Una persona pued
 
 Este programa es una agenda personal de amistades. Guarda de cada persona su cumpleaños, sus gustos, sus alergias o restricciones, y el historial de lo que ya se le ha regalado. A partir de esa información calcula cuántos días faltan para cada cumpleaños, avisa cuáles caen en el mes en curso, permite buscar a alguien por nombre o por gusto, y sugiere ideas de regalo descartando lo que ya se regaló antes. El programa corre en terminal con Python 3 y guarda todo en un archivo de texto para que la información siga ahí la próxima vez que se abra.
 
-Intento de pseudocódigo: <br>
-nombres  = ["Ana", "Diego"] <br>
-dias     = [14, 2]<br>
-meses    = [9, 3]<br>
-gustos   = ["chocolate", "futbol"]<br>
-regalos  = ["libro", "ninguno"]<br>
 
-Mi idea es algo así: Cuando el programa arranca, lo primero que hace es abrir el archivo donde están guardados los amigos y pasar toda esa información a las cinco listas que va a usar mientras corre. Enseguida revisa en qué mes estamos y muestra en pantalla a quiénes les toca cumpleaños este mes, como recordatorio.
+Intento de pseudocódigo <br>
+Estado Inicial <br>
+1. nombres (Lista de textos con los nombres de tus amigos)<br>
+2. días (Lista de números con el día del cumpleaños) <br>
+3. meses (Lista de números con el mes del cumpleaños)<br>
+4. gustos (Lista de textos con cosas que le agradan) <br>
+5. regalos (Lista de textos con los regalos que ya les he entregado en el pasado) <br>
+6. metas_momentos (Lista de textos para recordar sus proyectos o metas personales)<br>
+7. ultimas_interacciones (Lista de fechas que guarda el útlimo día que mostraste interés o editaste su información)<br>
 
-Después entra a un ciclo del que no va a salir hasta que el usuario decida terminar. Dentro de ese ciclo imprime el menú con las cinco opciones disponibles y espera a que el usuario escriba un número.
+Procesos
 
-Con ese número decide qué hacer. Si escribió 1, muestra la lista completa de amigos. Si escribió 2, pide los datos de una persona nueva y la agrega. Si escribió 3, pregunta un nombre y busca a esa persona. Si escribió 4, pregunta un mes y muestra quiénes cumplen años en él. Si escribió 5, guarda toda la información de vuelta en el archivo, se despide y el ciclo termina. Y si escribió cualquier otra cosa, avisa que la opción no es válida y vuelve a mostrar el menú sin hacer nada.
+Fase 1: Inicio de Sesión e Inicialización <br>
+//no estoy 100% seguro si esto se puede hacer en python
+1. El programa te da la bienvenida y te pide escribir tu contraseña de acceso <br>
+2. El programa busca el archivo "amigos.txt" en tu computadora <br>
+- Si existe: Usa la contraseña para descifrar el archivo. Si la clave es correcta, lee los datos y los carga en 7 listas paralelas. Si la clave es incorrecta, avisa del error y se cierra por seguridad <br>
+- Si no existe: Inicializa las 7 listas completamente vacías y muestra un mensaje: "Bienvenid@ a tu primer día en Proyecto Ágape" <br>
+3. Obtiene la fecha actual del sistema. Muestra de inmediato un resumen rápido de los cumpleaños del mes actual y si hay algún amigo que requiera atención urgente.<br>
 
-Mientras el usuario no elija salir, el programa repite ese proceso una y otra vez: mostrar el menú, leer la opción, ejecutar lo que corresponda, y volver a empezar.
+Fase 2: Menú Principal<br>
+El programa mostrará este menú en pantalla y esperará a que elijas una opción: <br>
+PROYECTO ÁGAPE: MENÚ PRINCIPAL <br>
+1. Resumen de conexiones //Indicador sutil de contacto <br>
+2. Ver calendario de cumpleaños //Solo del mes actual <br>
+3. Agregar nuevo amigo <br>
+4. Actualizar información de un amigo // Gustos, Regalos o Metas <br>
+5. Registrar conversación o saludo rápido <br>
+6. Buscar amigo //Ver detalles y sugerir regalos <br>
+7. Guardar y Salir <br>
 
-y hasta ahí me quedé por ahorita en lo que se me ocurre como detallar
+Fase 3: ¿Qué hace cada parte del Menú Principal?
+
+Operación 1: Resumen de conexiones <br>
