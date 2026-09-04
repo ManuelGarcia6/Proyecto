@@ -60,3 +60,21 @@ Operación 2: Ver el Calendario de Cumpleaños <br>
 5. Imprime abajo del calendario una lista ordenada: "Cumpleaños de este mes: [nombre] - Día [día] (Faltan [x] días".
 
 Operación 3: Agregar nuevo amigo <br>
+1. Te pide ingresar de forma ordenada: Nombre, día de cumpleaños, mes de cumpleaños, gustos, historial de regalos pasados (si tiene) y sus metas actuales. <br>
+2. El programa toma la fecha del día de hoy como su primera ultima_interacción. <br>
+3. Añade cada uno de estos datos al final de sus respectivas listas. (haciendo crecer la lista de n a n+1 elementos). <br>
+
+Operación 4: Actualizar información de un amigo <br>
+1. El programa te pide el nombre de la persona que quieres actulizar <br>
+2. Busca al amigo en la lista de nombres. <br>
+3. Si lo encuentra, te pregunta qué deseas cambiar: <br>
+  - Agregar un gusto nuevo <br>
+  - Registrar un nuevo regalo entregado <br>
+  - Actualizar o añadir una meta/momento importante. <br>
+4. una vez que guardas el cambio, el programa actualiza automáticamente su ultima_interaccion con la fecha de hoy. También el sistema te muestra un mensaje confirmando: "datos actualizados. Se ha registrado esta acción como una interacción reciente con tu amigo. <br>
+
+Operación 5: Registrar conversación o saludo rápido <br>
+1. Te pide el nombre del amigo con quien acabas de hablar. <br>
+2. Si lo encuentra, actualiza de forma manual su fecha en ultimas_interacciones al día de hoy. Su indicado sutil de contacto se reiniciará inmediatamente a cero. <br>
+
+Operación 6. Buscar amigo <br>
