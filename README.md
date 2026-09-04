@@ -21,7 +21,7 @@ Estado Inicial <br>
 
 Procesos
 
-//no estoy 100% seguro si esto se puede hacer en python
+//no estoy 100% seguro si esto se puede hacer en python <br>
 Fase 1: Inicio de Sesión e Inicialización <br>
 1. El programa te da la bienvenida y te pide escribir tu contraseña de acceso <br>
 2. El programa busca el archivo "amigos.txt" en tu computadora <br>
@@ -78,3 +78,15 @@ Operación 5: Registrar conversación o saludo rápido <br>
 2. Si lo encuentra, actualiza de forma manual su fecha en ultimas_interacciones al día de hoy. Su indicado sutil de contacto se reiniciará inmediatamente a cero. <br>
 
 Operación 6. Buscar amigo <br>
+1. Ingresas el nombre de tu amigo. <br>
+2. El programa busca su posición en las listas. <br>
+3. Si lo encuentra, imprime toda su información en pantalla. <br>
+4. Motor de sugerencias: <br>
+  - El programa tiene un "catálago interno" de regalos genéricos agrupado por temas. <br>
+  - Compara las opciones que coinciden con los gustos del amigo contra los que ya tienes guardado en su lista de regalos. <br>
+  - Imprime únicamente las sugerencias de regalos que sean nuevas, ocultando cualquier idea que ya se le ha regalado con anterioridad. <br>
+
+Operación 7. Guardar y Salir <br>
+1. Tomas todas las 7 listas paralelas con la información que tienes en memoria. <br>
+2. Sobreescribe el archivo local amigos.txt con la nueva info. <br>
+3. Muestra un mensaje de despedida y se cierra de manera segura.
