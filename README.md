@@ -21,8 +21,8 @@ Estado Inicial <br>
 
 Procesos
 
-Fase 1: Inicio de Sesión e Inicialización <br>
 //no estoy 100% seguro si esto se puede hacer en python
+Fase 1: Inicio de Sesión e Inicialización <br>
 1. El programa te da la bienvenida y te pide escribir tu contraseña de acceso <br>
 2. El programa busca el archivo "amigos.txt" en tu computadora <br>
 - Si existe: Usa la contraseña para descifrar el archivo. Si la clave es correcta, lee los datos y los carga en 7 listas paralelas. Si la clave es incorrecta, avisa del error y se cierra por seguridad <br>
@@ -43,3 +43,20 @@ PROYECTO ÁGAPE: MENÚ PRINCIPAL <br>
 Fase 3: ¿Qué hace cada parte del Menú Principal?
 
 Operación 1: Resumen de conexiones <br>
+1. El programa obtiene la fecha de hoy <br>
+2. Revisa a tus amigos uno por uno utilizando un contador <br>
+3. Por cada amigo, resta la fecha de hoy menos su ultima_interaccion para saber cuántos días han transcurrido <br>
+4. Si han pasado más de 15 días sin contacto , el programa elige una de estas recomendaciones de forma dinámica y la imprime en pantalla: <br>
+- Opción A: "Oye, no hablas con [nombre] desde hace [x] días. ¿Que tal si le preguntas cómo va con su meta de [meta]?" <br>
+- Opción B: "Hace [x] días que no sabes de [nombre]. Dado que le encanta [gustos]. ¿Por qué no le regalas algo del estilo?" <br>
+- Opción C: "¿Qué tal si le preguntas algo nuevo a [nombre] hoy? No interactúan desde hace [x] días."
+Si han pasado menos de 15 días, solo muestra un mensaje de "Conexión al día" <br>
+
+Operación 2: Ver el Calendario de Cumpleaños <br>
+1. El programa detecta automáticamente el año y mes en curso. <br>
+2. Utiliza la librería de calendario interna de Python para imprimir de forma bonita la cuadrícula de días del mes actual. <br>
+3. Recorre la lista de cumpleaños (días y meses). <br>
+4. Si el mes de cumpleaños de un amigo coincide con el mes actual, extrae su día. <br>
+5. Imprime abajo del calendario una lista ordenada: "Cumpleaños de este mes: [nombre] - Día [día] (Faltan [x] días".
+
+Operación 3: Agregar nuevo amigo <br>
