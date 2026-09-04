@@ -18,4 +18,26 @@ print(dias_transcurridos)
 print(dias_para_cumple)
 print(mismo_mes)
 print(mucho_tiempo_sin_hablar)
+
+#código del menú principal
+#este es un código que vi en laboratorio que quiero usar como guía
+# pide opción y dependiendo de la opción llama una función diferente
+opcion = int(input())    
+if(opcion == 1):
+ dolares  = float(input())
+ print(dolares_a_pesos(dolares))
+elif(opcion == 2):
+ noches  = int(input())
+ print(costo_hotel(noches))
+elif(opcion == 3):
+ pasajeros  = int(input())
+ print(costo_avion(pasajeros))
+elif(opcion == 4):
+ noches  = int(input())
+ pasajeros  = int(input())
+ print(costo_viaje(noches,pasajeros))
+elif(opcion == 5):
+elif(opcion == 6):
+elif(opcion == 7):
+
  
