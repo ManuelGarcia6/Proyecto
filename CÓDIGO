@@ -1,0 +1,21 @@
+"Proyecto Ágape - Avance 2"
+ 
+nombre = input()
+dia_cumple = float(input())
+mes_cumple = float(input())
+ultima_interaccion = float(input())
+ 
+dia_actual = 3.0
+mes_actual = 9.0
+ 
+dias_transcurridos = dia_actual - ultima_interaccion
+dias_para_cumple = dia_cumple - dia_actual
+mismo_mes = mes_cumple == mes_actual
+mucho_tiempo_sin_hablar = dias_transcurridos > 15
+ 
+print(nombre)
+print(dias_transcurridos)
+print(dias_para_cumple)
+print(mismo_mes)
+print(mucho_tiempo_sin_hablar)
+ 
