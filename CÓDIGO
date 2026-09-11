@@ -1,43 +1,46 @@
-"Proyecto Ágape - Avance 2"
- 
+#Proyecto Ágape - Avance 3
+
+def dias_sin_hablar(dia_actual, ultima_interaccion):
+    return dia_actual - ultima_interaccion
+
+def dias_para_cumple(dia_actual, dia_cumple):
+    return dia_cumple - dia_actual
+
+def es_cumple_este_mes(mes_cumple, mes_actual):
+    return mes_cumple == mes_actual
+
+def mensaje_conexion(nombre, dias_transcurridos):
+    if dias_transcurridos > 15:
+        return "Hace " + str(dias_transcurridos) + " dias que no hablas con " + nombre
+    else:
+        return "Conexion al dia con " + nombre
+
+dia_actual = 3.0
+mes_actual = 9.0
+
 nombre = input()
 dia_cumple = float(input())
 mes_cumple = float(input())
 ultima_interaccion = float(input())
- 
-dia_actual = 3.0
-mes_actual = 9.0
- 
-dias_transcurridos = dia_actual - ultima_interaccion
-dias_para_cumple = dia_cumple - dia_actual
-mismo_mes = mes_cumple == mes_actual
-mucho_tiempo_sin_hablar = dias_transcurridos > 15
- 
-print(nombre)
-print(dias_transcurridos)
-print(dias_para_cumple)
+
+transcurridos = dias_sin_hablar(dia_actual, ultima_interaccion)
+faltan = dias_para_cumple(dia_actual, dia_cumple)
+mismo_mes = es_cumple_este_mes(mes_cumple, mes_actual)
+
+print(mensaje_conexion(nombre, transcurridos))
+print(faltan)
 print(mismo_mes)
-print(mucho_tiempo_sin_hablar)
 
-#código del menú principal
-#este es un código que vi en laboratorio que quiero usar como guía
-# pide opción y dependiendo de la opción llama una función diferente
-opcion = int(input())    
-if(opcion == 1):
- dolares  = float(input())
- print(dolares_a_pesos(dolares))
-elif(opcion == 2):
- noches  = int(input())
- print(costo_hotel(noches))
-elif(opcion == 3):
- pasajeros  = int(input())
- print(costo_avion(pasajeros))
-elif(opcion == 4):
- noches  = int(input())
- pasajeros  = int(input())
- print(costo_viaje(noches,pasajeros))
-elif(opcion == 5):
-elif(opcion == 6):
-elif(opcion == 7):
+opcion = int(input())
 
- 
+if opcion == 1:
+    print(mensaje_conexion(nombre, transcurridos))
+elif opcion == 2:
+    if mismo_mes:
+        print(nombre + " cumple este mes")
+    else:
+        print(nombre + " no cumple este mes")
+elif opcion == 7:
+    print("Saliendo")
+else:
+    print("Opcion no valida")
