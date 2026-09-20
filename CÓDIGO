@@ -1,19 +1,51 @@
 #Proyecto Ágape - Avance 3
 
+"""
+--------------- Funciones principales ---------------
+"""
 def dias_sin_hablar(dia_actual, ultima_interaccion):
+    """
+    (uso de operadores, uso de funciones)
+    recibe: dia_actual (valor numérico), ultima_interaccion (valor numérico)
+    resta el día de la última interacción al día actual
+    devuelve: días transcurridos, (valor numérico)
+    """
     return dia_actual - ultima_interaccion
 
 def dias_para_cumple(dia_actual, dia_cumple):
+    """
+    (uso de operadores, uso de funciones)
+    recibe: dia_actual (valor numérico), dia_cumple (valor númerico)
+    resta el día actual al día del cumpleaños
+    devuelve: días que faltan para el cumpleaños, (valor numérico)
+    """
     return dia_cumple - dia_actual
 
 def es_cumple_este_mes(mes_cumple, mes_actual):
     return mes_cumple == mes_actual
+    """
+    (uso de operadores de comparación, uso de funciones)
+    recibe: mes_cumple (valor numérico), mes_actual (valor numérico)
+    compara si el mes del cumpleaños es igual al mes actual
+    devuelve: True si coinciden, False si no (booleano)
+    """
 
 def mensaje_conexion(nombre, dias_transcurridos):
+    """
+    (uso de condicionales, uso de funciones)
+    recibe: nombre (string), dias_transcurridos (valor numérico)
+    si pasaron más de 15 días sin hablar, pone un aviso con los días;
+    si no, pone un mensaje de que la conexión está al día
+    devuelve: mensaje, (string)
+    """
     if dias_transcurridos > 15:
         return "Hace " + str(dias_transcurridos) + " dias que no hablas con " + nombre
     else:
         return "Conexion al dia con " + nombre
+
+"""
+--------------- Programa Principal ---------------
+"""
 
 dia_actual = 3.0
 mes_actual = 9.0
