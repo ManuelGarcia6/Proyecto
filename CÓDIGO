@@ -22,13 +22,13 @@ def dias_para_cumple(dia_actual, dia_cumple):
     return dia_cumple - dia_actual
 
 def es_cumple_este_mes(mes_cumple, mes_actual):
-    return mes_cumple == mes_actual
     """
     (uso de operadores de comparación, uso de funciones)
     recibe: mes_cumple (valor numérico), mes_actual (valor numérico)
     compara si el mes del cumpleaños es igual al mes actual
     devuelve: True si coinciden, False si no (booleano)
     """
+   return mes_cumple == mes_actual
 
 def mensaje_conexion(nombre, dias_transcurridos):
     """
@@ -50,19 +50,28 @@ def mensaje_conexion(nombre, dias_transcurridos):
 dia_actual = 3.0
 mes_actual = 9.0
 
+print("Nombre del amigo:")
 nombre = input()
+print("Día de su cumpleaños (número):")
 dia_cumple = float(input())
+print("Mes de su cumpleaños (número):")
 mes_cumple = float(input())
-ultima_interaccion = float(input())
+print("Día del mes de tu ultima interacción (número)")
+ultima_interaccion = int(input())
 
 transcurridos = dias_sin_hablar(dia_actual, ultima_interaccion)
 faltan = dias_para_cumple(dia_actual, dia_cumple)
 mismo_mes = es_cumple_este_mes(mes_cumple, mes_actual)
 
 print(mensaje_conexion(nombre, transcurridos))
-print(faltan)
-print(mismo_mes)
+print("Dias para su cumpleaños:", faltan)
+print("Cumple este mes:", mismo_mes)
 
+print("\n=== MENU PRINCIPAL ===")
+print("1. Resumen de conexion")
+print("2. Ver si cumple este mes")
+print("7. Salir")
+print("Elige una opcion:")
 opcion = int(input())
 
 if opcion == 1:
