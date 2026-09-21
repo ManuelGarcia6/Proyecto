@@ -87,11 +87,10 @@ def mensaje_conexion(nombre, dias_transcurridos):
     devuelve: mensaje, (string)
     """
     if dias_transcurridos > 15:
-        return "Hace " + str(dias_transcurridos) 
-                + " dias que no hablas con " + nombre
+        return ("Hace " + str(dias_transcurridos)
+                + " dias que no hablas con " + nombre)
     else:
         return "Conexion al dia con " + nombre
-
 """
 --------------- Programa Principal ---------------
 """
@@ -103,12 +102,14 @@ mes_actual = int(input())
 
 print("Nombre del amigo:")
 nombre = input()
-print("Día de su cumpleaños (número):")
+print("Dia de su cumpleaños (número):")
 dia_cumple = int(input())
 print("Mes de su cumpleaños (número):")
 mes_cumple = int(input())
-print("Día del mes de tu ultima interacción (número)")
-ultima_interaccion = int(input())
+print("Dia de tu ultima interaccion (número):")
+dia_ultima = int(input())
+print("Mes de tu ultima interaccion (número):")
+mes_ultima = int(input())
 
 transcurridos = dias_sin_hablar(dia_actual, mes_actual, dia_ultima, mes_ultima)
 faltan = dias_para_cumple(dia_actual, mes_actual, dia_cumple, mes_cumple)
