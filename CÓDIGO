@@ -3,23 +3,71 @@
 """
 --------------- Funciones principales ---------------
 """
-def dias_sin_hablar(dia_actual, ultima_interaccion):
+def dia_del_año(dia,mes):
     """
-    (uso de operadores, uso de funciones)
-    recibe: dia_actual (valor numérico), ultima_interaccion (valor numérico)
-    resta el día de la última interacción al día actual
-    devuelve: días transcurridos, (valor numérico)
+    (uso de condicionales, uso de funciones)
+    recibe: día (valor númerico entero), mes (valor númerico entero del 1 al 12)
+    suma los dias de los meses anteriores al mes dado y le suma el dia
+    (se usa un año de 365 dias, sin bisiestos)
+    devuelve: numero de dia del año entre 1 y 365, (entero)
     """
-    return dia_actual - ultima_interaccion
+    if mes == 1:
+        acumulado = 0
+    elif mes == 2:
+        acumulado = 31
+    elif mes == 3:
+        acumulado = 59
+    elif mes == 4:
+        acumulado = 90
+    elif mes == 5:
+        acumulado = 120
+    elif mes == 6:
+        acumulado = 151
+    elif mes == 7:
+        acumulado = 181
+    elif mes == 8:
+        acumulado = 212
+    elif mes == 9:
+        acumulado = 243
+    elif mes == 10:
+        acumulado = 273
+    elif mes == 11:
+        acumulado = 304
+    else:
+        acumulado = 334
+    return acumulado + dia
 
-def dias_para_cumple(dia_actual, dia_cumple):
+def dias_sin_hablar(dia_actual, mes_actual, dia_ultima, mes_ultima):
     """
-    (uso de operadores, uso de funciones)
-    recibe: dia_actual (valor numérico), dia_cumple (valor númerico)
-    resta el día actual al día del cumpleaños
-    devuelve: días que faltan para el cumpleaños, (valor numérico)
+    (uso de operadores, uso de condicionales, uso de funciones)
+    recibe: dia_actual, mes_actual, dia_ultima, mes_ultima (enteros)
+    resta el dia del año de la ultima interaccion al dia del año de hoy;
+    si el resultado es negativo, la interaccion fue el año pasado y se
+    le suma 365
+    devuelve: dias transcurridos, (entero)
     """
-    return dia_cumple - dia_actual
+    hoy = dia_del_año(dia_actual, mes_actual)
+    ultima = dia_del_año(dia_ultima, mes_ultima)
+    transcurridos = hoy - ultima
+    if transcurridos < 0:
+        transcurridos = transcurridos + 365
+    return transcurridos
+
+def dias_para_cumple(dia_actual, mes_actual, dia_cumple, mes_cumple):
+    """
+    (uso de operadores, uso de condicionales, uso de funciones)
+    recibe: dia_actual, mes_actual, dia_cumple, mes_cumple (enteros)
+    resta el dia del año de hoy al dia del año del cumpleaños;
+    si el resultado es negativo, el cumpleaños ya paso y se cuenta el
+    del año siguiente sumando 365
+    devuelve: dias que faltan para el cumpleaños, (entero)
+    """
+    hoy = dia_del_año(dia_actual, mes_actual)
+    cumple = dia_del_año(dia_cumple, mes_cumple)
+    faltan = cumple - hoy
+    if faltan < 0:
+        faltan = faltan + 365
+    return faltan
 
 def es_cumple_este_mes(mes_cumple, mes_actual):
     """
@@ -28,7 +76,7 @@ def es_cumple_este_mes(mes_cumple, mes_actual):
     compara si el mes del cumpleaños es igual al mes actual
     devuelve: True si coinciden, False si no (booleano)
     """
-   return mes_cumple == mes_actual
+    return mes_cumple == mes_actual
 
 def mensaje_conexion(nombre, dias_transcurridos):
     """
@@ -39,7 +87,8 @@ def mensaje_conexion(nombre, dias_transcurridos):
     devuelve: mensaje, (string)
     """
     if dias_transcurridos > 15:
-        return "Hace " + str(dias_transcurridos) + " dias que no hablas con " + nombre
+        return "Hace " + str(dias_transcurridos) 
+                + " dias que no hablas con " + nombre
     else:
         return "Conexion al dia con " + nombre
 
@@ -47,20 +96,22 @@ def mensaje_conexion(nombre, dias_transcurridos):
 --------------- Programa Principal ---------------
 """
 
-dia_actual = 3.0
-mes_actual = 9.0
+print("Dia de hoy (numero):")
+dia_actual = int(input())
+print("Mes de hoy (numero):")
+mes_actual = int(input())
 
 print("Nombre del amigo:")
 nombre = input()
 print("Día de su cumpleaños (número):")
-dia_cumple = float(input())
+dia_cumple = int(input())
 print("Mes de su cumpleaños (número):")
-mes_cumple = float(input())
+mes_cumple = int(input())
 print("Día del mes de tu ultima interacción (número)")
 ultima_interaccion = int(input())
 
-transcurridos = dias_sin_hablar(dia_actual, ultima_interaccion)
-faltan = dias_para_cumple(dia_actual, dia_cumple)
+transcurridos = dias_sin_hablar(dia_actual, mes_actual, dia_ultima, mes_ultima)
+faltan = dias_para_cumple(dia_actual, mes_actual, dia_cumple, mes_cumple)
 mismo_mes = es_cumple_este_mes(mes_cumple, mes_actual)
 
 print(mensaje_conexion(nombre, transcurridos))
