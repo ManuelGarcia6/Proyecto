@@ -37,7 +37,7 @@ PROYECTO ÁGAPE: MENÚ PRINCIPAL <br>
 3. Agregar nuevo amigo <br>
 4. Actualizar información de un amigo // Gustos, Regalos o Metas <br>
 5. Registrar conversación o saludo rápido <br>
-6. Buscar amigo //Ver detalles y sugerir regalos <br>
+6. Buscar amigo <br>
 7. Guardar y Salir <br>
 
 Fase 3: ¿Qué hace cada parte del Menú Principal?
@@ -81,10 +81,6 @@ Operación 6. Buscar amigo <br>
 1. Ingresas el nombre de tu amigo. <br>
 2. El programa busca su posición en las listas. <br>
 3. Si lo encuentra, imprime toda su información en pantalla. <br>
-4. Motor de sugerencias: <br>
-  - El programa tiene un "catálago interno" de regalos genéricos agrupado por temas. <br>
-  - Compara las opciones que coinciden con los gustos del amigo contra los que ya tienes guardado en su lista de regalos. <br>
-  - Imprime únicamente las sugerencias de regalos que sean nuevas, ocultando cualquier idea que ya se le ha regalado con anterioridad. <br>
 
 Operación 7. Guardar y Salir <br>
 1. Tomas todas las 7 listas paralelas con la información que tienes en memoria. <br>
