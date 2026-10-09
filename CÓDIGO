@@ -1,12 +1,18 @@
-# Proyecto Ágape - Avance 4
+# Proyecto Agape - Avance 5.1
 
 # Constantes del Programa
 DIAS_DEL_ANIO = 365
 LIMITE_DE_DIAS_SIN_HABLAR = 15
 ANCHO_DEL_MENU = 45
+OPCION_SALIR = 7
+TOTAL_OPCIONES = 7
+MESES_DEL_ANIO = 12
+ANIO_MINIMO = 1900
+ANIO_MAXIMO = 2100
 
-# --------------- Funciones principales ---------------
-def dia_del_year(dia, mes):
+
+# --------------- Funciones de fechas ---------------
+def dia_del_anio(dia, mes):
     """
     (uso de condicionales, uso de funciones)
     recibe: dia (valor numerico entero),
@@ -41,21 +47,81 @@ def dia_del_year(dia, mes):
         acumulado = 334
     return acumulado + dia
 
-def dias_sin_hablar(dia_actual, mes_actual, dia_ultima, mes_ultima):
+
+def dia_absoluto(dia, mes, anio):
     """
-    (uso de operadores, uso de condicionales, uso de funciones)
-    recibe: dia_actual, mes_actual, dia_ultima, mes_ultima (enteros)
-    resta el dia del anio de la ultima interaccion al dia del anio de hoy;
-    si el resultado es negativo, la interaccion fue el anio pasado y se
-    le suma 365
-    devuelve: dias transcurridos, (entero)
+    (uso de operadores, uso de funciones)
+    recibe: dia, mes, anio (enteros)
+    cuenta los dias transcurridos desde el anio 1 hasta la fecha dada,
+    usando anios de 365 dias; sirve para restar dos fechas de anios
+    distintos
+    devuelve: numero de dia absoluto, (entero)
     """
-    hoy = dia_del_year(dia_actual, mes_actual)
-    ultima = dia_del_year(dia_ultima, mes_ultima)
-    transcurridos = hoy - ultima
-    if transcurridos < 0:
-        transcurridos = transcurridos + DIAS_DEL_ANIO
-    return transcurridos
+    return (anio - 1) * DIAS_DEL_ANIO + dia_del_anio(dia, mes)
+
+
+def dias_en_mes(mes):
+    """
+    (uso de condicionales, uso de funciones)
+    recibe: mes (entero del 1 al 12)
+    revisa cuantos dias tiene el mes (febrero con 28, sin bisiestos)
+    devuelve: dias del mes, (entero)
+    """
+    if mes == 2:
+        return 28
+    elif mes == 4 or mes == 6 or mes == 9 or mes == 11:
+        return 30
+    else:
+        return 31
+
+
+def nombre_del_mes(mes):
+    """
+    (uso de condicionales, uso de funciones)
+    recibe: mes (entero del 1 al 12)
+    revisa que numero de mes es y elige su nombre
+    devuelve: nombre del mes, (string)
+    """
+    if mes == 1:
+        return "enero"
+    elif mes == 2:
+        return "febrero"
+    elif mes == 3:
+        return "marzo"
+    elif mes == 4:
+        return "abril"
+    elif mes == 5:
+        return "mayo"
+    elif mes == 6:
+        return "junio"
+    elif mes == 7:
+        return "julio"
+    elif mes == 8:
+        return "agosto"
+    elif mes == 9:
+        return "septiembre"
+    elif mes == 10:
+        return "octubre"
+    elif mes == 11:
+        return "noviembre"
+    else:
+        return "diciembre"
+
+
+def dias_sin_hablar(dia_actual, mes_actual, anio_actual,
+                    dia_ultima, mes_ultima, anio_ultima):
+    """
+    (uso de operadores, uso de funciones)
+    recibe: fecha de hoy y fecha de la ultima interaccion
+    (dia, mes y anio de cada una, enteros)
+    resta el dia absoluto de la ultima interaccion al de hoy
+    devuelve: dias transcurridos, (entero, negativo si la ultima
+    interaccion es posterior a hoy)
+    """
+    hoy = dia_absoluto(dia_actual, mes_actual, anio_actual)
+    ultima = dia_absoluto(dia_ultima, mes_ultima, anio_ultima)
+    return hoy - ultima
+
 
 def dias_para_cumple(dia_actual, mes_actual, dia_cumple, mes_cumple):
     """
@@ -66,28 +132,31 @@ def dias_para_cumple(dia_actual, mes_actual, dia_cumple, mes_cumple):
     del anio siguiente sumando 365
     devuelve: dias que faltan para el cumpleanios, (entero)
     """
-    hoy = dia_del_year(dia_actual, mes_actual)
-    cumple = dia_del_year(dia_cumple, mes_cumple)
+    hoy = dia_del_anio(dia_actual, mes_actual)
+    cumple = dia_del_anio(dia_cumple, mes_cumple)
     faltan = cumple - hoy
     if faltan < 0:
         faltan = faltan + DIAS_DEL_ANIO
     return faltan
 
+
 def es_cumple_este_mes(mes_cumple, mes_actual):
     """
-    (uso de operadores de comparación, uso de funciones)
+    (uso de operadores de comparacion, uso de funciones)
     recibe: mes_cumple (valor numerico), mes_actual (valor numerico)
     compara si el mes del cumpleanios es igual al mes actual
     devuelve: True si coinciden, False si no (booleano)
     """
     return mes_cumple == mes_actual
 
+
+# --------------- Funciones de mensajes ---------------
 def mensaje_conexion(nombre, dias_transcurridos):
     """
     (uso de condicionales, uso de funciones)
     recibe: nombre (string), dias_transcurridos (valor numerico)
-    si pasaron más de 15 días sin hablar, pone un aviso con los dias;
-    si no, pone un mensaje de que la conexión está al día
+    si pasaron mas de 15 dias sin hablar, pone un aviso con los dias;
+    si no, pone un mensaje de que la conexion esta al dia
     devuelve: mensaje, (string)
     """
     if dias_transcurridos > LIMITE_DE_DIAS_SIN_HABLAR:
@@ -95,6 +164,7 @@ def mensaje_conexion(nombre, dias_transcurridos):
                 + " dias que no hablas con " + nombre)
     else:
         return "Conexion al dia con " + nombre
+
 
 def texto_o_vacio(texto):
     """
@@ -108,18 +178,68 @@ def texto_o_vacio(texto):
     else:
         return texto
 
-def mostrar_menu(nombre, transcurridos, faltan, mismo_mes,
-                 gustos, alergias, regalos, meta):
+
+# --------------- Funciones de entrada con validacion (while) ---------------
+def pedir_entero(mensaje, minimo, maximo):
     """
-    (uso de condicionales, uso de funciones)
-    recibe: nombre (string), transcurridos (entero), faltan (entero),
-            mismo_mes (booleano), gustos (string), alergias (string),
-            regalos (string), meta (string)
-    muestra el menu, ejecuta la opcion elegida y pregunta si se quiere
-    regresar al menu; si la respuesta es s, vuelve a llamarse a si misma
+    (uso de ciclo while, uso de funciones)
+    recibe: mensaje (string), minimo (entero), maximo (entero)
+    muestra el mensaje y lee un entero; mientras el numero este fuera
+    del rango, avisa del error y vuelve a preguntar
+    devuelve: numero valido entre minimo y maximo, (entero)
+    """
+    print(mensaje)
+    numero = int(input())
+    while numero < minimo or numero > maximo:
+        print("Valor no valido, escribe un numero entre "
+              + str(minimo) + " y " + str(maximo))
+        print(mensaje)
+        numero = int(input())
+    return numero
+
+
+def pedir_dia_mes(descripcion):
+    """
+    (uso de funciones, funcion que llama a otra funcion con while)
+    recibe: descripcion (string), por ejemplo "de su cumpleanios"
+    pide primero el dia (1 a 31) y despues el mes; como el dia se captura
+    antes que el mes, un ciclo while revisa que el dia exista en ese mes
+    y, si no, vuelve a pedir ambos
+    devuelve: dia y mes validos, (dos enteros)
+    """
+    dia = pedir_entero("Dia " + descripcion + " (1 a 31):", 1, 31)
+    mes = pedir_entero("Mes " + descripcion + " (1 a 12):",
+                       1, MESES_DEL_ANIO)
+    while dia > dias_en_mes(mes):
+        print("Ese mes no tiene " + str(dia) + " dias, "
+              + "escribe la fecha de nuevo.")
+        dia = pedir_entero("Dia " + descripcion + " (1 a 31):", 1, 31)
+        mes = pedir_entero("Mes " + descripcion + " (1 a 12):",
+                           1, MESES_DEL_ANIO)
+    return dia, mes
+
+
+def pedir_fecha(descripcion):
+    """
+    (uso de funciones, funcion que llama a otra funcion con while)
+    recibe: descripcion (string), por ejemplo "de hoy"
+    pide mes, dia y anio validos de una fecha completa
+    devuelve: dia, mes y anio, (tres enteros)
+    """
+    dia, mes = pedir_dia_mes(descripcion)
+    anio = pedir_entero("Anio " + descripcion + " (ej. 2026):",
+                        ANIO_MINIMO, ANIO_MAXIMO)
+    return dia, mes, anio
+
+
+# --------------- Funciones de pantalla ---------------
+def mostrar_menu():
+    """
+    (uso de funciones)
+    no recibe nada
+    imprime las opciones del menu principal
     no devuelve nada
     """
-    
     print("\n" + "=" * ANCHO_DEL_MENU)
     print("       PROYECTO AGAPE: MENU PRINCIPAL")
     print("=" * ANCHO_DEL_MENU)
@@ -131,38 +251,7 @@ def mostrar_menu(nombre, transcurridos, faltan, mismo_mes,
     print("6. Ver expediente del amigo")
     print("7. Salir")
     print("=" * ANCHO_DEL_MENU)
-    print("Elige una opcion:")
-    opcion = int(input())
-    
-    if opcion == 1:
-        print(mensaje_conexion(nombre, transcurridos))
-    elif opcion == 2:
-        if mismo_mes:
-            print(nombre + " cumple este mes")
-        else:
-            print(nombre + " no cumple este mes")
-        print("Dias para su birthday:", faltan)
-    elif opcion == 3:
-        print("Opcion en construccion")
-    elif opcion == 4:
-        print("Opcion en construccion")
-    elif opcion == 5:
-        print("Opcion en construccion")
-    elif opcion == 6:
-        mostrar_expediente(nombre, gustos, alergias, regalos, meta)
-    elif opcion == 7:
-        print("Saliendo")
-    else:
-        print("Opcion no valida")
 
-    if opcion != 7:
-        print("\nRegresar al menu principal? (s/n)")
-        respuesta = input()
-        if respuesta == "s" or respuesta == "S":
-            mostrar_menu(nombre, transcurridos, faltan, mismo_mes,
-                         gustos, alergias, regalos, meta)
-        else:
-            print("Saliendo")
 
 def mostrar_expediente(nombre, gustos, alergias, regalos, meta):
     """
@@ -180,23 +269,28 @@ def mostrar_expediente(nombre, gustos, alergias, regalos, meta):
     print("Meta actual: " + texto_o_vacio(meta))
     print("-" * ANCHO_DEL_MENU)
 
-# --------------- Programa Principal ---------------
-print("Dia de hoy (numero):")
-dia_actual = int(input())
-print("Mes de hoy (numero):")
-mes_actual = int(input())
 
-print("Nombre del amigo:")
+# --------------- Programa Principal ---------------
+print("--- Fecha de hoy ---")
+dia_actual, mes_actual, anio_actual = pedir_fecha("de hoy")
+
+print("\nNombre del amigo:")
 nombre = input()
-print("Dia de su birthday (numero):")
-dia_cumple = int(input())
-print("Mes de su birthday (numero):")
-mes_cumple = int(input())
-print("Dia de tu ultima interaccion (numero):")
-dia_ultima = int(input())
-print("Mes de tu ultima interaccion (numero):")
-mes_ultima = int(input())
-print("¿Cuáles son sus gustos? (ej. cafe, tecnologia, plantas):")
+print("\n--- Cumpleanios ---")
+dia_cumple, mes_cumple = pedir_dia_mes("de su cumpleanios")
+
+# ciclo while externo: repite hasta que la ultima interaccion no sea futura
+print("\n--- Ultima interaccion ---")
+transcurridos = -1
+while transcurridos < 0:
+    dia_ultima, mes_ultima, anio_ultima = pedir_fecha("de tu ultima "
+                                                      "interaccion")
+    transcurridos = dias_sin_hablar(dia_actual, mes_actual, anio_actual,
+                                    dia_ultima, mes_ultima, anio_ultima)
+    if transcurridos < 0:
+        print("La ultima interaccion no puede ser posterior a hoy.")
+
+print("\nCuales son sus gustos? (ej. cafe, tecnologia, plantas):")
 gustos = input()
 print("Alergias o restricciones (Enter si no tiene):")
 alergias = input()
@@ -205,9 +299,35 @@ regalos = input()
 print("Meta o proyecto actual (Enter si no sabes):")
 meta = input()
 
-transcurridos = dias_sin_hablar(dia_actual, mes_actual, dia_ultima, mes_ultima)
 faltan = dias_para_cumple(dia_actual, mes_actual, dia_cumple, mes_cumple)
 mismo_mes = es_cumple_este_mes(mes_cumple, mes_actual)
 
-mostrar_menu(nombre, transcurridos, faltan, mismo_mes,
-             gustos, alergias, regalos, meta)
+# ciclo while del menu:
+opcion = 0
+while opcion != OPCION_SALIR:
+    mostrar_menu()
+    opcion = pedir_entero("Elige una opcion:", 1, TOTAL_OPCIONES)
+
+    if opcion == 1:
+        print(mensaje_conexion(nombre, transcurridos))
+    elif opcion == 2:
+        print("Su cumpleanios es el " + str(dia_cumple) + " de "
+              + nombre_del_mes(mes_cumple))
+        if mismo_mes:
+            print(nombre + " cumple este mes")
+        else:
+            print(nombre + " no cumple este mes")
+        print("Dias para su cumpleanios:", faltan)
+    elif opcion == 3:
+        print("Opcion en construccion")
+    elif opcion == 4:
+        print("Opcion en construccion")
+    elif opcion == 5:
+        print("Opcion en construccion")
+    elif opcion == 6:
+        mostrar_expediente(nombre, gustos, alergias, regalos, meta)
+    else:
+        print("Saliendo")
+
+    if opcion != OPCION_SALIR:
+        input("\nPresiona Enter para volver al menu")
