@@ -1,6 +1,10 @@
-# Proyecto Agape - Avance 6
-# Los datos se guardan en una lista de listas: amigos[i] es el registro
+# Proyecto Agape - Avance 7
+# Los amigos se guardan en una lista de listas: amigos[i] es el registro
 # completo del amigo i, y cada campo se obtiene con una constante de indice.
+# Los datos que forman una cuadricula se guardan en una matriz: el
+# calendario del mes (semanas x dias de la semana, enteros).
+
+import calendar
 
 # Constantes del Programa
 DIAS_DEL_ANIO = 365
@@ -11,6 +15,8 @@ TOTAL_OPCIONES = 7
 MESES_DEL_ANIO = 12
 ANIO_MINIMO = 1900
 ANIO_MAXIMO = 2100
+CALENDARIO_RENGLONES = 6
+CALENDARIO_COLUMNAS = 7
 
 # Indices de los campos de cada amigo
 NOMBRE = 0
@@ -325,6 +331,88 @@ def dias_sin_hablar_amigo(amigo, dia_actual, mes_actual, anio_actual):
                            amigo[ANIO_ULTIMA])
 
 
+# --------------- Funciones de matrices ---------------
+def crear_matriz(renglones, columnas, valor):
+    """
+    (uso de listas anidadas, ciclos anidados, uso de funciones)
+    recibe: renglones (entero), columnas (entero), valor (cualquier dato)
+    crea una matriz de renglones x columnas con el valor en cada celda;
+    cada renglon se arma por separado para que sean listas distintas
+    devuelve: matriz, (lista de listas)
+    """
+    matriz = []
+    for ren in range(renglones):
+        renglon = []
+        for col in range(columnas):
+            renglon.append(valor)
+        matriz.append(renglon)
+    return matriz
+
+
+def crear_calendario(mes, anio):
+    """
+    (uso de matrices, ciclo for, uso de condicionales, uso de funciones)
+    recibe: mes (entero del 1 al 12), anio (entero)
+    crea una matriz de 6 renglones (semanas) x 7 columnas (lunes a
+    domingo) y coloca cada dia del mes en su celda; las celdas sin dia
+    quedan en 0. La biblioteca calendar solo se usa para saber en que
+    dia de la semana empieza el mes (0 = lunes) y cuantos dias tiene
+    devuelve: calendario, (matriz de enteros)
+    """
+    primer_dia, total_dias = calendar.monthrange(anio, mes)
+    calendario = crear_matriz(CALENDARIO_RENGLONES,
+                              CALENDARIO_COLUMNAS, 0)
+    renglon = 0
+    columna = primer_dia
+    for dia in range(1, total_dias + 1):
+        calendario[renglon][columna] = dia
+        columna = columna + 1
+        if columna == CALENDARIO_COLUMNAS:
+            columna = 0
+            renglon = renglon + 1
+    return calendario
+
+
+def hay_cumple_en_dia(amigos, dia, mes):
+    """
+    (uso de listas, ciclo for, uso de funciones)
+    recibe: amigos (lista de listas), dia y mes (enteros)
+    revisa si algun amigo cumple anios en esa fecha
+    devuelve: True si hay alguno, False si no (booleano)
+    """
+    for amigo in amigos:
+        if amigo[DIA_CUMPLE] == dia and amigo[MES_CUMPLE] == mes:
+            return True
+    return False
+
+
+def mostrar_calendario(calendario, amigos, mes, anio):
+    """
+    (uso de matrices, ciclos anidados, condicionales, uso de funciones)
+    recibe: calendario (matriz de enteros), amigos (lista de listas),
+    mes y anio (enteros)
+    imprime la matriz como cuadricula de lunes a domingo y marca con un
+    asterisco los dias en que algun amigo cumple anios
+    no devuelve nada
+    """
+    print("\n" + nombre_del_mes(mes) + " " + str(anio))
+    print("Lu  Ma  Mi  Ju  Vi  Sa  Do")
+    for ren in range(CALENDARIO_RENGLONES):
+        linea = ""
+        for col in range(CALENDARIO_COLUMNAS):
+            dia = calendario[ren][col]
+            if dia == 0:
+                celda = "    "
+            elif hay_cumple_en_dia(amigos, dia, mes):
+                celda = str(dia).rjust(2) + "* "
+            else:
+                celda = str(dia).rjust(2) + "  "
+            linea = linea + celda
+        if linea.strip() != "":
+            print(linea.rstrip())
+    print("* = cumpleanios")
+
+
 # --------------- Funciones de pantalla ---------------
 def mostrar_menu():
     """
@@ -337,7 +425,7 @@ def mostrar_menu():
     print("       PROYECTO AGAPE: MENU PRINCIPAL")
     print("=" * ANCHO_DEL_MENU)
     print("1. Resumen de conexiones")
-    print("2. Ver cumpleanios del mes")
+    print("2. Ver calendario de cumpleanios")
     print("3. Agregar nuevo amigo")
     print("4. Actualizar informacion del amigo")
     print("5. Registrar conversacion o saludo")
@@ -350,21 +438,18 @@ def mostrar_expediente(amigo):
     """
     (uso de listas, uso de funciones)
     recibe: amigo (lista con los 10 campos del registro)
-    imprime la informacion personal guardada del amigo
+    imprime la informacion personal guardada del amigo (gustos, alergias,
+    regalos y meta; el cumpleanios y los dias sin hablar se consultan en
+    las opciones 1 y 2)
     no devuelve nada
     """
     print("\n" + "-" * ANCHO_DEL_MENU)
     print("EXPEDIENTE DE " + amigo[NOMBRE])
     print("-" * ANCHO_DEL_MENU)
-    print("Cumpleanios: " + str(amigo[DIA_CUMPLE]) + " de "
-          + nombre_del_mes(amigo[MES_CUMPLE]))
     print("Gustos: " + texto_o_vacio(amigo[GUSTOS]))
     print("Alergias o restricciones: " + texto_o_vacio(amigo[ALERGIAS]))
     print("Regalos pasados: " + texto_o_vacio(amigo[REGALOS]))
     print("Meta actual: " + texto_o_vacio(amigo[META]))
-    print("Ultima interaccion: " + str(amigo[DIA_ULTIMA]) + " de "
-          + nombre_del_mes(amigo[MES_ULTIMA]) + " de "
-          + str(amigo[ANIO_ULTIMA]))
     print("-" * ANCHO_DEL_MENU)
 
 
@@ -384,15 +469,17 @@ def resumen_conexiones(amigos, dia_actual, mes_actual, anio_actual):
         print(mensaje_conexion(amigo[NOMBRE], transcurridos))
 
 
-def ver_cumpleanios_del_mes(amigos, dia_actual, mes_actual):
+def ver_cumpleanios_del_mes(amigos, dia_actual, mes_actual, anio_actual):
     """
-    (uso de listas, ciclo for, uso de condicionales, uso de funciones)
-    recibe: amigos (lista de listas), dia_actual y mes_actual (enteros)
-    imprime los amigos cuyo cumpleanios cae en el mes actual, con los
-    dias que faltan
+    (uso de matrices, listas, ciclo for, condicionales, uso de funciones)
+    recibe: amigos (lista de listas), fecha de hoy (tres enteros)
+    arma e imprime el calendario del mes actual y debajo la lista de
+    amigos cuyo cumpleanios cae en ese mes, con los dias que faltan
     no devuelve nada
     """
-    print("Cumpleanios de " + nombre_del_mes(mes_actual) + ":")
+    calendario = crear_calendario(mes_actual, anio_actual)
+    mostrar_calendario(calendario, amigos, mes_actual, anio_actual)
+    print("\nCumpleanios de " + nombre_del_mes(mes_actual) + ":")
     hay_alguno = False
     for amigo in amigos:
         if amigo[MES_CUMPLE] == mes_actual:
@@ -516,7 +603,8 @@ while opcion != OPCION_SALIR:
     if opcion == 1:
         resumen_conexiones(amigos, dia_actual, mes_actual, anio_actual)
     elif opcion == 2:
-        ver_cumpleanios_del_mes(amigos, dia_actual, mes_actual)
+        ver_cumpleanios_del_mes(amigos, dia_actual, mes_actual,
+                                anio_actual)
     elif opcion == 3:
         agregar_amigo(amigos, dia_actual, mes_actual, anio_actual)
     elif opcion == 4:
