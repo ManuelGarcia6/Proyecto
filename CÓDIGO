@@ -1,4 +1,6 @@
-# Proyecto Agape - Avance 5.1
+# Proyecto Agape - Avance 6
+# Los datos se guardan en una lista de listas: amigos[i] es el registro
+# completo del amigo i, y cada campo se obtiene con una constante de indice.
 
 # Constantes del Programa
 DIAS_DEL_ANIO = 365
@@ -9,6 +11,18 @@ TOTAL_OPCIONES = 7
 MESES_DEL_ANIO = 12
 ANIO_MINIMO = 1900
 ANIO_MAXIMO = 2100
+
+# Indices de los campos de cada amigo
+NOMBRE = 0
+DIA_CUMPLE = 1
+MES_CUMPLE = 2
+GUSTOS = 3
+ALERGIAS = 4
+REGALOS = 5
+META = 6
+DIA_ULTIMA = 7
+MES_ULTIMA = 8
+ANIO_ULTIMA = 9
 
 
 # --------------- Funciones de fechas ---------------
@@ -140,16 +154,6 @@ def dias_para_cumple(dia_actual, mes_actual, dia_cumple, mes_cumple):
     return faltan
 
 
-def es_cumple_este_mes(mes_cumple, mes_actual):
-    """
-    (uso de operadores de comparacion, uso de funciones)
-    recibe: mes_cumple (valor numerico), mes_actual (valor numerico)
-    compara si el mes del cumpleanios es igual al mes actual
-    devuelve: True si coinciden, False si no (booleano)
-    """
-    return mes_cumple == mes_actual
-
-
 # --------------- Funciones de mensajes ---------------
 def mensaje_conexion(nombre, dias_transcurridos):
     """
@@ -179,23 +183,57 @@ def texto_o_vacio(texto):
         return texto
 
 
+def unir_texto(texto_actual, texto_nuevo):
+    """
+    (uso de condicionales, uso de funciones)
+    recibe: texto_actual (string), texto_nuevo (string)
+    agrega el texto nuevo al final separado por coma; si el texto actual
+    esta vacio, devuelve solo el nuevo
+    devuelve: texto unido, (string)
+    """
+    if texto_actual == "":
+        return texto_nuevo
+    else:
+        return texto_actual + ", " + texto_nuevo
+
+
 # --------------- Funciones de entrada con validacion (while) ---------------
 def pedir_entero(mensaje, minimo, maximo):
     """
     (uso de ciclo while, uso de funciones)
     recibe: mensaje (string), minimo (entero), maximo (entero)
-    muestra el mensaje y lee un entero; mientras el numero este fuera
-    del rango, avisa del error y vuelve a preguntar
+    muestra el mensaje y lee un texto; mientras no sea un numero entero
+    dentro del rango, avisa del error y vuelve a preguntar
+    (se revisa con isdecimal() antes de convertir, asi un texto como
+    "abc" o un Enter vacio no truena el programa)
     devuelve: numero valido entre minimo y maximo, (entero)
     """
     print(mensaje)
-    numero = int(input())
-    while numero < minimo or numero > maximo:
+    texto = input()
+    while (not texto.isdecimal()
+           or int(texto) < minimo or int(texto) > maximo):
         print("Valor no valido, escribe un numero entre "
               + str(minimo) + " y " + str(maximo))
         print(mensaje)
-        numero = int(input())
-    return numero
+        texto = input()
+    return int(texto)
+
+
+def pedir_texto(mensaje):
+    """
+    (uso de ciclo while, uso de funciones)
+    recibe: mensaje (string)
+    muestra el mensaje y lee un texto; mientras este vacio, vuelve a
+    preguntar
+    devuelve: texto no vacio, (string)
+    """
+    print(mensaje)
+    texto = input()
+    while texto == "":
+        print("Este dato no puede quedar vacio.")
+        print(mensaje)
+        texto = input()
+    return texto
 
 
 def pedir_dia_mes(descripcion):
@@ -232,6 +270,61 @@ def pedir_fecha(descripcion):
     return dia, mes, anio
 
 
+# --------------- Funciones de la lista de amigos ---------------
+def buscar_indice(amigos, nombre):
+    """
+    (uso de listas, uso de listas anidadas, ciclo for, uso de funciones)
+    recibe: amigos (lista de listas), nombre (string)
+    recorre la lista comparando el nombre de cada amigo con el buscado,
+    sin importar mayusculas o minusculas
+    devuelve: posicion del amigo en la lista, o -1 si no esta (entero)
+    """
+    for i in range(len(amigos)):
+        if amigos[i][NOMBRE].lower() == nombre.lower():
+            return i
+    return -1
+
+
+def pedir_indice_amigo(amigos):
+    """
+    (uso de listas, uso de funciones)
+    recibe: amigos (lista de listas)
+    pide el nombre de un amigo y lo busca en la lista; si no existe,
+    avisa
+    devuelve: posicion del amigo en la lista, o -1 si no esta (entero)
+    """
+    print("Nombre del amigo:")
+    nombre = input()
+    indice = buscar_indice(amigos, nombre)
+    if indice == -1:
+        print("No se encontro a " + nombre + ".")
+    return indice
+
+
+def registrar_interaccion(amigo, dia, mes, anio):
+    """
+    (uso de listas, uso de funciones)
+    recibe: amigo (lista), dia, mes, anio (enteros)
+    guarda la fecha dada como ultima interaccion del amigo
+    no devuelve nada
+    """
+    amigo[DIA_ULTIMA] = dia
+    amigo[MES_ULTIMA] = mes
+    amigo[ANIO_ULTIMA] = anio
+
+
+def dias_sin_hablar_amigo(amigo, dia_actual, mes_actual, anio_actual):
+    """
+    (uso de listas, uso de funciones)
+    recibe: amigo (lista), fecha de hoy (tres enteros)
+    calcula los dias desde la ultima interaccion guardada en el amigo
+    devuelve: dias transcurridos, (entero)
+    """
+    return dias_sin_hablar(dia_actual, mes_actual, anio_actual,
+                           amigo[DIA_ULTIMA], amigo[MES_ULTIMA],
+                           amigo[ANIO_ULTIMA])
+
+
 # --------------- Funciones de pantalla ---------------
 def mostrar_menu():
     """
@@ -243,8 +336,8 @@ def mostrar_menu():
     print("\n" + "=" * ANCHO_DEL_MENU)
     print("       PROYECTO AGAPE: MENU PRINCIPAL")
     print("=" * ANCHO_DEL_MENU)
-    print("1. Resumen de conexion")
-    print("2. Ver cumpleanios")
+    print("1. Resumen de conexiones")
+    print("2. Ver cumpleanios del mes")
     print("3. Agregar nuevo amigo")
     print("4. Actualizar informacion del amigo")
     print("5. Registrar conversacion o saludo")
@@ -253,54 +346,166 @@ def mostrar_menu():
     print("=" * ANCHO_DEL_MENU)
 
 
-def mostrar_expediente(nombre, gustos, alergias, regalos, meta):
+def mostrar_expediente(amigo):
     """
-    (uso de funciones)
-    recibe: nombre, gustos, alergias, regalos, meta (strings)
+    (uso de listas, uso de funciones)
+    recibe: amigo (lista con los 10 campos del registro)
     imprime la informacion personal guardada del amigo
     no devuelve nada
     """
     print("\n" + "-" * ANCHO_DEL_MENU)
-    print("EXPEDIENTE DE " + nombre)
+    print("EXPEDIENTE DE " + amigo[NOMBRE])
     print("-" * ANCHO_DEL_MENU)
-    print("Gustos: " + texto_o_vacio(gustos))
-    print("Alergias o restricciones: " + texto_o_vacio(alergias))
-    print("Regalos pasados: " + texto_o_vacio(regalos))
-    print("Meta actual: " + texto_o_vacio(meta))
+    print("Cumpleanios: " + str(amigo[DIA_CUMPLE]) + " de "
+          + nombre_del_mes(amigo[MES_CUMPLE]))
+    print("Gustos: " + texto_o_vacio(amigo[GUSTOS]))
+    print("Alergias o restricciones: " + texto_o_vacio(amigo[ALERGIAS]))
+    print("Regalos pasados: " + texto_o_vacio(amigo[REGALOS]))
+    print("Meta actual: " + texto_o_vacio(amigo[META]))
+    print("Ultima interaccion: " + str(amigo[DIA_ULTIMA]) + " de "
+          + nombre_del_mes(amigo[MES_ULTIMA]) + " de "
+          + str(amigo[ANIO_ULTIMA]))
     print("-" * ANCHO_DEL_MENU)
+
+
+# --------------- Funciones de las opciones del menu ---------------
+def resumen_conexiones(amigos, dia_actual, mes_actual, anio_actual):
+    """
+    (uso de listas, ciclo for, uso de funciones)
+    recibe: amigos (lista de listas), fecha de hoy (tres enteros)
+    recorre todos los amigos e imprime el mensaje de conexion de cada uno
+    no devuelve nada
+    """
+    if len(amigos) == 0:
+        print("Todavia no hay amigos registrados.")
+    for amigo in amigos:
+        transcurridos = dias_sin_hablar_amigo(amigo, dia_actual,
+                                              mes_actual, anio_actual)
+        print(mensaje_conexion(amigo[NOMBRE], transcurridos))
+
+
+def ver_cumpleanios_del_mes(amigos, dia_actual, mes_actual):
+    """
+    (uso de listas, ciclo for, uso de condicionales, uso de funciones)
+    recibe: amigos (lista de listas), dia_actual y mes_actual (enteros)
+    imprime los amigos cuyo cumpleanios cae en el mes actual, con los
+    dias que faltan
+    no devuelve nada
+    """
+    print("Cumpleanios de " + nombre_del_mes(mes_actual) + ":")
+    hay_alguno = False
+    for amigo in amigos:
+        if amigo[MES_CUMPLE] == mes_actual:
+            faltan = dias_para_cumple(dia_actual, mes_actual,
+                                      amigo[DIA_CUMPLE], amigo[MES_CUMPLE])
+            print(amigo[NOMBRE] + " - dia " + str(amigo[DIA_CUMPLE])
+                  + " (faltan " + str(faltan) + " dias)")
+            hay_alguno = True
+    if not hay_alguno:
+        print("Nadie cumple anios este mes.")
+
+
+def agregar_amigo(amigos, dia_actual, mes_actual, anio_actual):
+    """
+    (uso de listas, listas anidadas, append, ciclo while, funciones)
+    recibe: amigos (lista de listas), fecha de hoy (tres enteros)
+    pide los datos de un amigo nuevo (el nombre no se puede repetir),
+    arma su registro como una lista y lo agrega al final de amigos
+    no devuelve nada
+    """
+    nombre = pedir_texto("Nombre del nuevo amigo:")
+    while buscar_indice(amigos, nombre) != -1:
+        print("Ya existe un amigo con ese nombre.")
+        nombre = pedir_texto("Nombre del nuevo amigo:")
+    dia_cumple, mes_cumple = pedir_dia_mes("de su cumpleanios")
+
+    # repite hasta que la ultima interaccion no sea posterior a hoy
+    transcurridos = -1
+    while transcurridos < 0:
+        dia_ultima, mes_ultima, anio_ultima = pedir_fecha(
+            "de tu ultima interaccion")
+        transcurridos = dias_sin_hablar(dia_actual, mes_actual,
+                                        anio_actual, dia_ultima,
+                                        mes_ultima, anio_ultima)
+        if transcurridos < 0:
+            print("La ultima interaccion no puede ser posterior a hoy.")
+
+    print("Cuales son sus gustos? (Enter si no sabes):")
+    gustos = input()
+    print("Alergias o restricciones (Enter si no tiene):")
+    alergias = input()
+    print("Regalos que ya le diste (Enter si ninguno):")
+    regalos = input()
+    print("Meta o proyecto actual (Enter si no sabes):")
+    meta = input()
+
+    amigo = [nombre, dia_cumple, mes_cumple, gustos, alergias, regalos,
+             meta, dia_ultima, mes_ultima, anio_ultima]
+    amigos.append(amigo)
+    print(nombre + " se agrego a tu lista.")
+
+
+def actualizar_amigo(amigos, dia_actual, mes_actual, anio_actual):
+    """
+    (uso de listas, condicionales, funciones)
+    recibe: amigos (lista de listas), fecha de hoy (tres enteros)
+    busca al amigo y permite agregar un gusto, registrar un regalo o
+    cambiar su meta; despues registra hoy como su ultima interaccion
+    no devuelve nada
+    """
+    indice = pedir_indice_amigo(amigos)
+    if indice != -1:
+        amigo = amigos[indice]
+        print("Que quieres cambiar?")
+        print("1. Agregar un gusto")
+        print("2. Registrar un regalo entregado")
+        print("3. Actualizar su meta")
+        cambio = pedir_entero("Elige una opcion:", 1, 3)
+        if cambio == 1:
+            nuevo = pedir_texto("Gusto nuevo:")
+            amigo[GUSTOS] = unir_texto(amigo[GUSTOS], nuevo)
+        elif cambio == 2:
+            nuevo = pedir_texto("Regalo entregado:")
+            amigo[REGALOS] = unir_texto(amigo[REGALOS], nuevo)
+        else:
+            amigo[META] = pedir_texto("Nueva meta:")
+        registrar_interaccion(amigo, dia_actual, mes_actual, anio_actual)
+        print("Datos actualizados. Se registro esta accion como una "
+              "interaccion reciente con " + amigo[NOMBRE] + ".")
+
+
+def registrar_conversacion(amigos, dia_actual, mes_actual, anio_actual):
+    """
+    (uso de listas, condicionales, funciones)
+    recibe: amigos (lista de listas), fecha de hoy (tres enteros)
+    busca al amigo y guarda hoy como su ultima interaccion
+    no devuelve nada
+    """
+    indice = pedir_indice_amigo(amigos)
+    if indice != -1:
+        registrar_interaccion(amigos[indice], dia_actual, mes_actual,
+                              anio_actual)
+        print("Conversacion registrada con " + amigos[indice][NOMBRE] + ".")
+
+
+def ver_expediente(amigos):
+    """
+    (uso de listas, condicionales, funciones)
+    recibe: amigos (lista de listas)
+    busca al amigo e imprime su expediente
+    no devuelve nada
+    """
+    indice = pedir_indice_amigo(amigos)
+    if indice != -1:
+        mostrar_expediente(amigos[indice])
 
 
 # --------------- Programa Principal ---------------
 print("--- Fecha de hoy ---")
 dia_actual, mes_actual, anio_actual = pedir_fecha("de hoy")
 
-print("\nNombre del amigo:")
-nombre = input()
-print("\n--- Cumpleanios ---")
-dia_cumple, mes_cumple = pedir_dia_mes("de su cumpleanios")
-
-# ciclo while externo: repite hasta que la ultima interaccion no sea futura
-print("\n--- Ultima interaccion ---")
-transcurridos = -1
-while transcurridos < 0:
-    dia_ultima, mes_ultima, anio_ultima = pedir_fecha("de tu ultima "
-                                                      "interaccion")
-    transcurridos = dias_sin_hablar(dia_actual, mes_actual, anio_actual,
-                                    dia_ultima, mes_ultima, anio_ultima)
-    if transcurridos < 0:
-        print("La ultima interaccion no puede ser posterior a hoy.")
-
-print("\nCuales son sus gustos? (ej. cafe, tecnologia, plantas):")
-gustos = input()
-print("Alergias o restricciones (Enter si no tiene):")
-alergias = input()
-print("Regalos que ya le diste (Enter si ninguno):")
-regalos = input()
-print("Meta o proyecto actual (Enter si no sabes):")
-meta = input()
-
-faltan = dias_para_cumple(dia_actual, mes_actual, dia_cumple, mes_cumple)
-mismo_mes = es_cumple_este_mes(mes_cumple, mes_actual)
+# lista de listas: cada elemento es el registro de un amigo
+amigos = []
 
 # ciclo while del menu:
 opcion = 0
@@ -309,24 +514,19 @@ while opcion != OPCION_SALIR:
     opcion = pedir_entero("Elige una opcion:", 1, TOTAL_OPCIONES)
 
     if opcion == 1:
-        print(mensaje_conexion(nombre, transcurridos))
+        resumen_conexiones(amigos, dia_actual, mes_actual, anio_actual)
     elif opcion == 2:
-        print("Su cumpleanios es el " + str(dia_cumple) + " de "
-              + nombre_del_mes(mes_cumple))
-        if mismo_mes:
-            print(nombre + " cumple este mes")
-        else:
-            print(nombre + " no cumple este mes")
-        print("Dias para su cumpleanios:", faltan)
+        ver_cumpleanios_del_mes(amigos, dia_actual, mes_actual)
     elif opcion == 3:
-        print("Opcion en construccion")
+        agregar_amigo(amigos, dia_actual, mes_actual, anio_actual)
     elif opcion == 4:
-        print("Opcion en construccion")
+        actualizar_amigo(amigos, dia_actual, mes_actual, anio_actual)
     elif opcion == 5:
-        print("Opcion en construccion")
+        registrar_conversacion(amigos, dia_actual, mes_actual,
+                               anio_actual)
     elif opcion == 6:
-        mostrar_expediente(nombre, gustos, alergias, regalos, meta)
-    else:
+        ver_expediente(amigos)
+    elif opcion == OPCION_SALIR:
         print("Saliendo")
 
     if opcion != OPCION_SALIR:
