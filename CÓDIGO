@@ -1,4 +1,4 @@
-# Proyecto Agape - Avance 7
+# Proyecto Agape - Avance 8
 # Los amigos se guardan en una lista de listas: amigos[i] es el registro
 # completo del amigo i, y cada campo se obtiene con una constante de indice.
 # Los datos que forman una cuadricula se guardan en una matriz: el
