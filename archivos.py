@@ -1,7 +1,7 @@
 # Proyecto Agape - archivos.py
 
 """
-Modulo archivos: guarda la lista de amigos en el archivo amigos.txt y la
+Biblioteca archivos: guarda la lista de amigos en el archivo amigos.txt y la
 carga de nuevo al abrir el programa. Cada campo de cada amigo se escribe
 en su propia linea del archivo, por lo que cada amigo ocupa 10 lineas.
 El archivo se crea en la carpeta desde la que se ejecuta el programa.
